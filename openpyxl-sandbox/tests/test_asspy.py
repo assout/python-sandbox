@@ -3,10 +3,15 @@
 # vim: set fileencoding=utf-8 :
 
 from unittest import TestCase
-from asspy.asspy import Foo
+import unittest
+import asspy
+
 
 class TestFoo(TestCase):
 
     def test_say(self):
-        self.assertEqual(foo.say(), 'foo')
+        self.assertEqual(asspy, '2')
 
+
+if __name__ == "__main__":
+    unittest.main()

@@ -1,21 +1,14 @@
 #!/usr/bin/env python3
 # vim: set fileencoding=utf-8 :
 import openpyxl
+from collections import namedtuple
+
 import os
 import shutil
 import argparse
 from dataclasses import dataclass
 from copy import copy
-
-
-@dataclass(frozen=True)
-class SourceRecord:
-    id: int
-    name: str
-    is_oridinal: bool = False
-
-    def bow(self) -> str:
-        return self.name + ' めー'
+from typing import NamedTuple
 
 
 def main():
@@ -37,13 +30,49 @@ def main():
 
     ws.print_area.clear()
     wb.save(dest_name)
-    # s['A1:']
 
-    # i = openpyxl.utils.cell.column_index_from_string("b")
-    # print(i)
+    # Data Classes
+    @dataclass(frozen=True)
+    class SourceRecord:
+        id: int
+        name: str
+        is_oridinal: bool = False
+
+        def bow(self) -> str:
+            return self.name + ' めー'
 
     record = SourceRecord(1, "りんご")
     print(record.bow())
+    print(record.name)
+
+    # Data Classes
+    @dataclass(frozen=True)
+    class SourceRecord:
+        """
+        データ
+        """
+        id: int
+        name: str
+        is_oridinal: bool = False
+
+        def bow(self) -> str:
+            return self.name + ' めー'
+
+    record = SourceRecord(1, "りんご")
+    print(record.bow())
+    print(record.name)
+
+    # Named Tuple
+    Item = namedtuple('Item', ('title', 'url', 'user', 'body'))
+    i = Item(title='item1', url='http:example.com/item1', user='user1',
+             body='body1')
+    print(i.body)
+    print(i.user)
+
+    # Named Tuple2
+    Item2 = NamedTuple('Item2', [('title', str), ('price', int)])
+    i2 = Item2(title="hoge", price="fuga")
+    print(i2.title)
 
 
 if __name__ == '__main__':

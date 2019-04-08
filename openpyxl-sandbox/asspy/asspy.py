@@ -1,9 +1,11 @@
 #!/usr/bin/env python3
 # vim: set fileencoding=utf-8 :
 import openpyxl
+import os
 import shutil
 import argparse
 from dataclasses import dataclass
+from copy import copy
 
 
 @dataclass(frozen=True)
@@ -24,11 +26,17 @@ def main():
     args = parser.parse_args()
     print(args.input)
 
-    shutil.copyfile("./template.xlsx", "new.xlsx")
-    wb = openpyxl.load_workbook('new.xlsx')
+    dest_name = "new.xlsx"
+    shutil.copyfile("template.xlsx", dest_name)
+    wb = openpyxl.load_workbook(dest_name)
     ws = wb["Sheet"]
     print(ws)
-    print(tuple(ws))
+    for row in ws.iter_rows(min_row=2, min_col=1):
+        for col in row:
+            col._style = copy(col.offset(-1, 0)._style)
+
+    ws.print_area.clear()
+    wb.save(dest_name)
     # s['A1:']
 
     # i = openpyxl.utils.cell.column_index_from_string("b")
@@ -39,4 +47,5 @@ def main():
 
 
 if __name__ == '__main__':
+    print(os.getcwd())
     main()
